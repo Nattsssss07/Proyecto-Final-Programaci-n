@@ -7,6 +7,7 @@ package parcial;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class DB {
@@ -151,6 +152,25 @@ public class DB {
             }
         }
     }
+    
+    public void ActualizarProducto(String producto, String cantidad, String precio) throws SQLException{
+        double PRECIO = Double.valueOf(precio);
+        int CANTIDAD = Integer.valueOf(cantidad);
+        PRECIO = CANTIDAD * PRECIO;
+        String sql = "update producto set Cantidad=?, Precio=? where Codigo=?";
+        PreparedStatement cursor = this.con.prepareCall(sql);
+        cursor.setInt(1, CANTIDAD);
+        cursor.setDouble(2, PRECIO);
+        cursor.setString(3, producto);
+        int result = cursor.executeUpdate();
+        if(result > 0){
+            JOptionPane.showMessageDialog(null, "Se ha modificado el producto correctamente :D");
+        }else{
+            JOptionPane.showMessageDialog(null,"Error al insertar producto en la base de datos :C");
+        }
+    }
+    
+    
     
     public void Eliminar(String codigo) throws SQLException{
         try{
